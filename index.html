@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalender</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    #calendar {
+      flex: 1;
+      padding: 0;
+    }
+    .fc {
+      background-color: #121212;
+      color: #fff;
+    }
+    .fc-toolbar, .fc-header-toolbar {
+      display: none;
+    }
+    .fc-col-header-cell-cushion {
+      color: #fff;
+      text-transform: capitalize;
+    }
+    .fc-daygrid-day { background-color: #1f1f1f; }
+    .fc-daygrid-day-number { color: #fff; }
+    .fc-event {
+      background-color: #000;
+      color: #fff;
+      border: 2px solid #fff;
+      font-size: 0.9em;
+      padding: 2px;
+    }
+    .fc-day-today {
+      background-color: #2a2a2a !important;
+    }
+    .fc-timegrid-event {
+      min-height: 50px !important;
+      white-space: normal;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div id="calendar"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const today = new Date();
+      const start = new Date(today);
+      const end = new Date(today);
+      end.setDate(start.getDate() + 6);
+
+      const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        initialView: 'timeGrid',
+        themeSystem: 'standard',
+        googleCalendarApiKey: 'AIzaSyCgH5o92J_w7FGDaZQI_45vhJYUn6LGnOU',
+        events: function(info, successCallback, failureCallback) {
+          fetch('https://www.googleapis.com/calendar/v3/calendars/m.tore.jensen%40gmail.com/events?key=AIzaSyCgH5o92J_w7FGDaZQI_45vhJYUn6LGnOU')
+            .then(response => response.json())
+            .then(data => {
+              const events = data.items.map(item => ({
+                title: item.summary,
+                start: item.start.dateTime || item.start.date,
+                end: item.end.dateTime || item.end.date,
+                allDay: !!item.start.date
+              }));
+              successCallback(events);
+            }).catch(err => failureCallback(err));
+        },
+        height: '100%',
+        contentHeight: 'auto',
+        expandRows: true,
+        slotMinTime: '06:00:00',
+        slotMaxTime: '20:00:00',
+        slotDuration: '01:00:00',
+        slotLabelFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        },
+        locale: 'sv',
+        timeZone: 'Europe/Stockholm',
+        headerToolbar: false,
+        allDayText: 'Heldag',
+        dayHeaderFormat: { weekday: 'short', day: 'numeric', month: 'short' },
+        visibleRange: () => ({ start, end })
+      });
+
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
