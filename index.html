@@ -45,11 +45,10 @@
       background-color: #2a2a2a !important;
     }
     .fc-timegrid-event {
-      min-height: 50px !important;
+      min-height: 75px !important; /* <-- ÄNDRAD TILL TRE RUTOR HÖJD */
       white-space: normal;
       overflow-wrap: break-word;
     }
-    /* Rubrik i händelser (t.ex. titel) */
     .fc-event-title {
       font-size: 1.4em; /* 40% större fontstorlek för rubriken */
       font-weight: bold;
@@ -61,16 +60,16 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const today = new Date();
-      const start = new Date(today); // Startdatum är idag
-      const end = new Date(today); // Slutdatum är idag
-      end.setDate(start.getDate() + 2); // Lägg till 2 dagar för att visa 3 dagar totalt
+      const start = new Date(today);
+      const end = new Date(today);
+      end.setDate(start.getDate() + 2);
 
       const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         initialView: 'timeGrid',
         themeSystem: 'standard',
-        googleCalendarApiKey: 'AIzaSyCgH5o92J_w7FGDaZQI_45vhJYUn6LGnOU',
+        googleCalendarApiKey: 'AIzaSyAxtkLAScLWZ0s4dGDx1gdrSmGqaixS6c8',
         events: function(info, successCallback, failureCallback) {
-          fetch('https://www.googleapis.com/calendar/v3/calendars/m.tore.jensen%40gmail.com/events?key=AIzaSyCgH5o92J_w7FGDaZQI_45vhJYUn6LGnOU')
+          fetch('https://www.googleapis.com/calendar/v3/calendars/b.mats111%40gmail.com/events?key=AIzaSyAxtkLAScLWZ0s4dGDx1gdrSmGqaixS6c8')
             .then(response => response.json())
             .then(data => {
               const events = data.items.map(item => ({
@@ -87,7 +86,7 @@
         expandRows: true,
         slotMinTime: '06:00:00',
         slotMaxTime: '20:00:00',
-        slotDuration: '01:00:00',
+        slotDuration: '00:30:00',
         slotLabelFormat: {
           hour: '2-digit',
           minute: '2-digit',
@@ -98,7 +97,7 @@
         headerToolbar: false,
         allDayText: 'Heldag',
         dayHeaderFormat: { weekday: 'short', day: 'numeric', month: 'short' },
-        visibleRange: () => ({ start, end }) // Sätt synlig period till tre dagar
+        visibleRange: () => ({ start, end })
       });
 
       calendar.render();
