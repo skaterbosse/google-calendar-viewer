@@ -38,7 +38,7 @@
       background-color: #000;
       color: #fff;
       border: 2px solid #fff;
-      font-size: 0.9em;
+      font-size: 1.26em; /* 40% större fontstorlek för händelsetexten */
       padding: 2px;
     }
     .fc-day-today {
@@ -49,6 +49,11 @@
       white-space: normal;
       overflow-wrap: break-word;
     }
+    /* Rubrik i händelser (t.ex. titel) */
+    .fc-event-title {
+      font-size: 1.4em; /* 40% större fontstorlek för rubriken */
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -56,9 +61,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const today = new Date();
-      const start = new Date(today);
-      const end = new Date(today);
-      end.setDate(start.getDate() + 6);
+      const start = new Date(today); // Startdatum är idag
+      const end = new Date(today); // Slutdatum är idag
+      end.setDate(start.getDate() + 2); // Lägg till 2 dagar för att visa 3 dagar totalt
 
       const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         initialView: 'timeGrid',
@@ -93,7 +98,7 @@
         headerToolbar: false,
         allDayText: 'Heldag',
         dayHeaderFormat: { weekday: 'short', day: 'numeric', month: 'short' },
-        visibleRange: () => ({ start, end })
+        visibleRange: () => ({ start, end }) // Sätt synlig period till tre dagar
       });
 
       calendar.render();
@@ -101,3 +106,4 @@
   </script>
 </body>
 </html>
+
